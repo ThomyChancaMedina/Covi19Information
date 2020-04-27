@@ -3,16 +3,16 @@ package com.example.testcovid.ui.main
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.testcovid.domain.model.Covid19Imp
 import com.example.testcovid.domain.model.LatestImp
 import com.example.testcovid.domain.model.LocationImp
-import com.example.testcovid.domain.usecase.GetLatestCase
+import com.example.testcovid.domain.usecase.GetCovid19Case
 import com.example.testcovid.ui.common.ScopedViewModel
-//import com.example.testcovid.utils.UiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val getLatestCase: GetLatestCase,
+    private val getcovid19Case: GetCovid19Case,
     uiDispatcher: CoroutineDispatcher
 ) : ScopedViewModel(uiDispatcher) {
 
@@ -25,8 +25,8 @@ class MainViewModel(
 
     sealed class UiModel {
         object Loading : UiModel()
-        data class Content(val latestImp: LatestImp) : UiModel()
-        data class Navigation(val location: LocationImp) : UiModel()
+        data class Content(val latestImp: Covid19Imp) : UiModel()
+        data class Navigation(val location: Covid19Imp) : UiModel()
         object RequestLocationPermission : UiModel()
     }
 
@@ -36,9 +36,9 @@ class MainViewModel(
 
     fun onRequestedCovid() {
         launch {
-            Log.v(TAG,"thomy ::"+getLatestCase.invoke().confirmed)
+            Log.v(TAG,"thomy ::"+getcovid19Case.invoke().confirmed)
             _model.value = UiModel.Loading
-            _model.value = UiModel.Content(getLatestCase.invoke())
+            _model.value = UiModel.Content(getcovid19Case.invoke())
         }
     }
 

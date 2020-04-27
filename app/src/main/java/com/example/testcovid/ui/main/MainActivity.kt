@@ -54,8 +54,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         when (model) {
             is MainViewModel.UiModel.Content -> {
-                binding.rtConfirmed.text = model.latestImp.confirmed.toString()
-                binding.rtRecovered.text = model.latestImp.recovered.toString()
+                binding.rtConfirmed.text = model.latestImp.confirmed.value.toString()
+                binding.rtRecovered.text = model.latestImp.recovered.value.toString()
+                binding.rtDeaths.text= model.latestImp.deaths.value.toString()
             }
 
             MainViewModel.UiModel.RequestLocationPermission -> viewModel.onRequestedCovid()

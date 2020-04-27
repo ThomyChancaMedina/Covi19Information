@@ -1,16 +1,17 @@
 package com.example.testcovid.di.module
 
 import android.app.Application
-import com.example.testcovid.data.database.LocationDatabase
+import com.example.testcovid.data.database.CovidDatabase
 import com.example.testcovid.data.database.RoomDataSource
+import com.example.testcovid.data.repository.Covid19Repository
 import com.example.testcovid.data.repository.LatestRepository
 import com.example.testcovid.data.repository.LocationRepository
 import com.example.testcovid.data.service.TheLocationDb
-import com.example.testcovid.data.service.TheLocationDbDataSource
-import com.example.testcovid.data.source.LocalDataSource
+import com.example.testcovid.data.service.DbDataSource
+import com.example.testcovid.data.source.DataSource
 import com.example.testcovid.data.source.RemoteDataSource
+import com.example.testcovid.domain.usecase.GetCovid19Case
 import com.example.testcovid.domain.usecase.GetLatestCase
-
 import com.example.testcovid.domain.usecase.GetLocationsUseCase
 import com.example.testcovid.ui.main.MainActivity
 import com.example.testcovid.ui.main.MainViewModel
@@ -34,18 +35,19 @@ fun Application.initDI() {
 
 val NetworkModule = module {
 
-    single { LocationDatabase.build(get()) }
-    factory<LocalDataSource> { RoomDataSource(get()) }
-    factory<RemoteDataSource> { TheLocationDbDataSource(get()) }
+    single { CovidDatabase.build(get()) }
+    factory<DataSource> { RoomDataSource(get()) }
+    factory<RemoteDataSource> { DbDataSource(get()) }
     single<CoroutineDispatcher> { Dispatchers.Main }
-    single(named("baseUrl")) { "https://coronavirus-tracker-api.herokuapp.com/v2/" }
+    single(named("baseUrl")) { "https://covid19.mathdro.id/" }
     single { TheLocationDb(get(named("baseUrl"))) }
 }
 
 val dataMoule = module {
-    // single instance of PostsRepository
+    // single instance of Covid19Repository
     factory { LocationRepository(get(), get()) }
     factory { LatestRepository(get(),get()) }
+    factory { Covid19Repository(get(),get()) }
 }
 
 val PostModule = module {
@@ -53,6 +55,7 @@ val PostModule = module {
         viewModel { MainViewModel(get(), get()) }
         scoped { GetLocationsUseCase(get()) }
         scoped { GetLatestCase(get()) }
+        scoped { GetCovid19Case(get()) }
     }
 }
 

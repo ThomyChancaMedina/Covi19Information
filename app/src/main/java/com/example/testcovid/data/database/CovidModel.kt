@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
@@ -33,6 +34,7 @@ data class Latest(
 tableName = "LocationData")
 data class Location(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int,
+
     val country: String,
 
     @field:SerializedName("country_code")
@@ -78,3 +80,50 @@ data class Location(
     }
 
 }
+
+@Entity(
+    tableName = "Covid19Data")
+data class Covid19(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
+    val id: Int,
+
+    @field:SerializedName("confirmed")
+    @field:Embedded(prefix = "confirmed_")
+    val confirmed: Confirmed,
+
+    @field:SerializedName("recovered")
+    @field:Embedded(prefix = "recovered_")
+    val recovered: Recovered,
+
+    @field:SerializedName("deaths")
+    @field:Embedded(prefix = "deaths_")
+    val deaths: Deaths
+){
+    data class Confirmed(
+        @field:SerializedName("detail")
+        val detail: String,
+        @field:SerializedName("value")
+        val value: Int
+    )
+
+    data class Deaths(
+        @field:SerializedName("detail")
+        val detail: String,
+        @field:SerializedName("value")
+        val value: Int
+    )
+    data class Recovered(
+        @field:SerializedName("detail")
+        val detail: String,
+        @field:SerializedName("value")
+        val value: Int
+    )
+
+}
+
+
+
+
+
+
+

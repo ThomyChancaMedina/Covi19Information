@@ -12,12 +12,12 @@ class TheLocationDb (url: String) {
 
     }
 
-    val service: TheLocationDbService = Retrofit.Builder()
+    val service: Covid19DbService = Retrofit.Builder()
         .baseUrl(url)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-        .run { create(TheLocationDbService::class.java) }
+        .run { create(Covid19DbService::class.java) }
 
 
 }

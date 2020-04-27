@@ -5,20 +5,25 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [
-    Latest::class,
-    Location::class
-], version = 1)
-abstract class LocationDatabase : RoomDatabase() {
+@Database(
+    entities = [
+        Latest::class,
+        Location::class,
+        Covid19::class
+    ], version = 1
+)
+abstract class CovidDatabase : RoomDatabase() {
     companion object {
         fun build(context: Context) = Room.databaseBuilder(
             context,
-            LocationDatabase::class.java,
-            "Location-db"
+            CovidDatabase::class.java,
+            "Covid19DB"
         ).build()
     }
 
     abstract fun LocationDao(): LocationDao
 
     abstract fun LatestDao(): LatestDao
+
+    abstract fun CovidDao(): CovidGlobalDao
 }
